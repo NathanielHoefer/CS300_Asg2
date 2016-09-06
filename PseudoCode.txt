@@ -1,0 +1,130 @@
+/*****************************************************************************/
+/* Program 1 - Inventory Application										 */
+/*****************************************************************************
+    Author: Nathaniel Hoefer
+    Student ID: X529U639
+    Program: #1
+
+
+Description of the Problem:
+	You are the owner of a new store and need to keep track of your inventory.
+   	Since you are a seasoned C++ programmer, you are going to write a C++
+   	program to perform this function.
+
+
+Class Name: Inventory
+
+Data:		- partNum - part number that should hold int from 1 to 100
+			- item - Name of item
+			- quantity - quantity of how many of the part there is
+			- price - price per item
+			- totalCost - total cost of the inventory items
+			
+Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
+				based on the partNum chosen
+				Input Parms: int partNum - is the index of part to be changed
+							string item - name of item
+							quantity - number of that specific item
+							price - price per item
+				Output Parms: None
+				> Assign arguments to values
+			
+			
+
+Class Name: InvMethods
+
+Data:		- invCount - The number of different inventory items
+			- invTotal - The total value of all the items
+			
+Mutator Functions:
+			+ setInvCount
+			+ setInvTotal
+			
+Accessor Functions:
+			+ getInvCount
+			+ getInvTotal
+			
+Functions:	+ DisplayMenu() - Displays user menu
+				Input Parms: None
+				Output Parms: None
+				> Print title and options
+				> Request and validate user selection
+				> Implement method based on selection
+				
+			- DisplayParts(useTitle) - Prints current inventory
+				Input Parms: bool useTitle - Whether to display title
+				Output Parms: None				
+				> If useTitle is true, print parts title
+				> Print labels and inventory items formatted
+				> Wait for user input to continue
+				
+			- NewPart() - Adds an additional item to inventory
+				Input Parms: None
+				Output Parms: None		
+				> Print title
+				> Request part info
+				> Print new item formatted
+				> Wait for user input to continue
+				
+			- NewPart(item,quantity,price) - Overloaded to allow for 
+				adding a new part without user input
+				Input Parms: int item
+							int quantity
+							float price	
+				Output Parms: None
+				> Modify the new n+1 item using parameters
+				
+			- ModifyPart() - User selects item to be modified and updates info
+				Input Parms: None
+				Output Parms: None	
+				> Print title and current parts
+				> Request part and print it
+				> Request part info and modify part
+				> Print modified part
+				> Wait for user input to continue
+				
+			- DisplayInvTotal() - Prints the total value of inventory
+				Input Parms: None
+				Output Parms: None	
+				> Print title
+				> Cycle through parts and collect inventory totals
+				> Print inventory total
+				
+			- ExitProgram() - Exits the menu loop by returning true
+				Input Parms: None
+				Output Parms: bool to be used by menu displayed
+				> Return true to confirm that exit program is accessed.
+				
+			- RequestPartInfo(itemNum) - Asks the user for item, quantity,
+				and cost. 
+				Input Parms: Part to be changed. Lists negative number to 
+					specify new part	
+				Output Parms: None
+				> Request Item, Quantity, and Price from user
+				> Modify part based on argument passed
+				
+			- ParseLine(line) - Parses string passed using comma delimiters 
+				and adds info to inventory.
+				Input Parms: a single line from inventory.txt
+				Output Parms: None
+				Returns: 1 for successful parse, 0 for error
+				> Tries to parse line into item, quantity, and price.
+				> If successful, create new part
+				> If unsuccessful, print error message
+				
+			- CalcTotalCost(partNum) - Returns the total cost of parts in 
+				inventory
+				Input Parms: Part number between 0-Max count
+				Output Parms: None
+				Return: The float total cost of part in inventory
+				> Price of Part * Quantity of Part
+				
+			- FormatItemDisplay(partNum,displayLabels) - Formats the items to
+				display correctly within a table.
+				Input Parms: int partNum - part to be formatted
+							bool displayLabels - true to display labels
+				Output Parms: Prints part info with or without labels
+				> Display part if displayLabels == true
+				> Display formatted part info.
+
+*/
