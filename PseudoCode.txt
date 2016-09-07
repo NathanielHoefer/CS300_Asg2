@@ -19,6 +19,10 @@ Data:		- partNum - part number that should hold int from 1 to 100
 			- quantity - quantity of how many of the part there is
 			- price - price per item
 			- totalCost - total cost of the inventory items
+
+Cnstrctrs:	+ Inventory() - Sets the values to default
+			+ Inventory(item,quantity,price) - Sets the values and calculates
+				the partNum and totalCost.			
 			
 Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 				based on the partNum chosen
@@ -33,11 +37,14 @@ Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 
 Class Name: InvMethods
 
-Data:		- invCount - The number of different inventory items
-			- invTotal - The total value of all the items
+Data:		- invArray[] (inventory) - Holds all of the inventory objects.
+			- invCount (int) - The number of different inventory items
+			- invTotal (float) - The total value of all the items
+			
+Cnstrctrs:	+ InvMethods() - Creates Inventory array and 
 			
 Mutator Functions:
-			+ setInvCount
+			+ incrementInvCount - Increases count by 1.
 			+ setInvTotal
 			
 Accessor Functions:
@@ -103,7 +110,7 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> Request Item, Quantity, and Price from user
 				> Modify part based on argument passed
 				
-			- ParseLine(line) - Parses string passed using comma delimiters 
+			+ ParseLine(line) - Parses string passed using comma delimiters 
 				and adds info to inventory.
 				Input Parms: a single line from inventory.txt
 				Output Parms: None

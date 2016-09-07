@@ -179,6 +179,7 @@ struct inventoryItem
 /*****************************************************************************/
 
 
+
 /* This inventory class is used to contain all of the methods and member
  * variables pertaining to the Inventory process. There are some things that
  * are not as efficient as they could be, but I decided to experiment with
@@ -191,15 +192,11 @@ class Inventory
 
 // Member Variables
 
-	// Contains all of the inventory info
-	inventoryItem inventory[MAX_INVENTORY];
-
-	// The number of different inventory items
-	int invCount;
-
-	// The total value of all the items
-	float invTotal;
-
+	int m_partNum;
+	string m_item;
+	int m_quantity;
+	float m_price;
+	float m_totalCost;
 
 
 	public:
@@ -207,6 +204,46 @@ class Inventory
 // Constructor
 
 	Inventory();
+	Inventory(string item, int quantity, float price);
+
+
+// Methods
+
+	// Updates the part info based on the partNum chosen
+	void ModifyItem(int partNum, string item, int quantity, float price);
+
+};
+
+
+/* This inventory class is used to contain all of the methods and member
+ * variables pertaining to the Inventory process. There are some things that
+ * are not as efficient as they could be, but I decided to experiment with
+ * implementing the class within this one file.
+ */
+class InvMethods
+{
+
+	private:
+
+// Member Variables
+
+	// Holds all of the inventory objects.
+	Inventory invArray[MAX_INVENTORY];
+	//inventoryItem inventory[MAX_INVENTORY];
+
+	// The number of different inventory items
+	int m_invCount;
+
+	// The total value of all the items
+	float m_invTotal;
+
+
+
+	public:
+
+// Constructor
+
+	InvMethods();
 
 
 // Methods
@@ -225,29 +262,9 @@ class Inventory
 	int getInvCount() { return invCount; };
 	float getInvTotal() { return invTotal; };
 
-	// Gets the structure info
-	int getPartNum(int itemNum)
-		{ return Inventory::inventory[itemNum - 1].partNum; };
-	string getItem(int itemNum)
-		{ return Inventory::inventory[itemNum - 1].item; };
-	int getQuantity(int itemNum)
-		{ return Inventory::inventory[itemNum - 1].quantity; };
-	float getPrice(int itemNum)
-		{ return Inventory::inventory[itemNum - 1].price; };
-	float getTotalCost(int itemNum)
-		{ return Inventory::inventory[itemNum - 1].totalCost; };
-
-	// Sets the structure info
-	void setPartNum(int itemNum, int partNum)
-		{ Inventory::inventory[itemNum].partNum = partNum; };
-	void setItem(int itemNum, string item)
-		{ Inventory::inventory[itemNum].item = item; };
-	void setQuantity(int itemNum, int quantity)
-		{ Inventory::inventory[itemNum].quantity = quantity; };
-	void setPrice(int itemNum, float price)
-		{ Inventory::inventory[itemNum].price = price; };
-	void setTotalCost(int itemNum, float totalCost)
-		{ Inventory::inventory[itemNum].totalCost = totalCost; };
+	// Modifies the member variables of the class
+	void incrementInvCount() { m_invCount++; };
+	void setInvTotal(float invTotal) { m_invTotal = invTotal; };
 
 
 
@@ -367,12 +384,37 @@ int main(void)
 
 Inventory::Inventory()
 {
-	invCount = 0;
-	invTotal = 0;
+	InvMethods::IncrementInvCount();
+
+	m_partNum = 1;
+	m_item = "Default";
+	m_quantity = 1;
+	m_price = 1.00;
+	m_totalCost = 1.00;
 }
 
 
+Inventory::Inventory(string item, int quantity, float price)
+{
+	// Increased the inventory count by 1
+	InvMethods::incrementInvCount;
 
+	// Sets the members to the entered values
+	m_partNum = InvMethods::getInvCount;
+	m_item = item;
+	m_quantity = quantity;
+	m_price = price;
+	m_totalCost = quantity * price;
+}
+
+
+InvMethods::InvMethods()
+{
+
+	Inventory invArray[MAX_INVENTORY];
+	//TODO Continue from here
+
+}
 
 // METHODS ********************************************************************
 
