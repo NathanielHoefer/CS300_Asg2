@@ -153,6 +153,9 @@ const char NEW_LINE = '\n';
 // Maximum number of items in inventory
 const int MAX_INVENTORY = 100;
 
+// Name of file where inventory is saved
+const string INV_FILE_NAME = "inventory.txt";
+
 
 
 
@@ -255,10 +258,6 @@ class InvMethods
 	// Displays user menu
 	void DisplayMenu();
 
-	// Parses the line and adds info to inventory
-	int ParseLine(string line);
-
-
 
 // Mutators and Accessors
 
@@ -267,7 +266,7 @@ class InvMethods
 	static float getInvTotal() { return m_invTotal; };
 
 	// Modifies the member variables of the class
-	static void incrementInvCount() { m_invCount++; };
+	static void incrementInvCount() { m_invCount += 1; };
 	static void setInvTotal(float invTotal) { m_invTotal = invTotal; };
 
 
@@ -298,8 +297,15 @@ class InvMethods
 	// Formats the items to display correctly
 	void formatItemDisplay(int partIndex, bool displayLabels);
 
+	// Parses the line and adds info to inventory
+	int ParseLine(string line);
+
 	// Returns the total cost of inventoried item
 	float CalcTotalCost(int item);
+
+	// Reads and saves from file.
+	void ReadFile();
+	void SaveFile();
 
 };
 
@@ -315,66 +321,14 @@ int main(void)
 
 	// Instantiated inventory object used for inventory procedures
 	InvMethods inventory;
-	string inventoryFileName = "inventory.txt";
 
-
-	// Opens text file and reads the values into the inventory.
-	ifstream readFile(inventoryFileName.c_str());
-	string fileLine;
-
-	// if 0, then error has occurred.
-	int no_error = 1;
-	if (readFile.is_open())
-	{
-		// Reads each line and uses parse function to store data
-		// ParseLine will return 0 if an there is an issue with opening
-		// the file.
-		while (getline(readFile, fileLine) && no_error > 0)
-		{
-			// Checks to see if the count is greater than 100
-			if (inventory.getInvCount() < MAX_INVENTORY)
-			{
-				no_error = inventory.ParseLine(fileLine);
-			}
-			else
-			{
-				no_error = 0;
-			}
-		}
-
-		// Tells user if there was an error reading the file
-		if (no_error == 0)
-		{
-			cout << "Error Reading File" << endl;
-		}
-		readFile.close();
-	}
 
 
 	// Displays the menu and enters loop until user is finished.
 	inventory.DisplayMenu();
 
 
-	// Opens Text file and saves each part until inventory is complete.
-	ofstream saveFile(inventoryFileName.c_str());
-	int inventoryCount = inventory.getInvCount();
-	if (saveFile.is_open())
-	{
-		// Writes every item to its own line using commas as delimiters
-		for (int i = 1; i <= inventoryCount; i++)
-		{
 
-			string item = inventory.invArray[i].getItem();
-			int quantity = inventory.invArray[i].getQuantity();
-			float price = inventory.invArray[i].getPrice();
-			saveFile << item << "," << quantity << "," << price << endl;
-		}
-		saveFile.close();
-
-		cout << NEW_LINE << "File Saved" << endl;
-	}
-
-	cout << "Program Ended" << endl;
 }
 
 
@@ -405,7 +359,7 @@ Inventory::Inventory(string item, int quantity, float price)
 	InvMethods::incrementInvCount();
 
 	// Sets the members to the entered values
-	m_partNum = InvMethods::getInvCount;
+	m_partNum = InvMethods::getInvCount();
 	m_item = item;
 	m_quantity = quantity;
 	m_price = price;
@@ -445,6 +399,8 @@ void Inventory::ModifyItem(int partNum, string item, int quantity, float price)
 // Displays user menu
 void InvMethods::DisplayMenu()
 {
+
+	ReadFile();
 
 	// Loops until user enters menu 5 to exit program.
 	bool isExit = false;
@@ -528,6 +484,8 @@ void InvMethods::DisplayMenu()
 			cin.ignore(10000,'\n');
 		}
 	}
+
+	SaveFile();
 }
 
 
@@ -892,3 +850,73 @@ void InvMethods::formatItemDisplay(int partIndex, bool displayLabels)
 			<< invArray[partIndex].getTotalCost() << endl;
 }
 
+
+/*****************************************************************************/
+
+
+// Reads the file to inventory array
+void InvMethods::ReadFile()
+{
+
+
+	// Opens text file and reads the values into the inventory.
+	ifstream readFile(INV_FILE_NAME.c_str());
+	string fileLine;
+
+	// if 0, then error has occurred.
+	int no_error = 1;
+	if (readFile.is_open())
+	{
+		// Reads each line and uses parse function to store data
+		// ParseLine will return 0 if an there is an issue with opening
+		// the file.
+		while (getline(readFile, fileLine) && no_error > 0)
+		{
+			// Checks to see if the count is greater than 100
+			if (getInvCount() < MAX_INVENTORY)
+			{
+				no_error = ParseLine(fileLine);
+			}
+			else
+			{
+				no_error = 0;
+			}
+		}
+
+		// Tells user if there was an error reading the file
+		if (no_error == 0)
+		{
+			cout << "Error Reading File" << endl;
+		}
+		readFile.close();
+	}
+}
+
+
+/*****************************************************************************/
+
+
+// Reads the file to inventory array
+void InvMethods::SaveFile()
+{
+	// Opens Text file and saves each part until inventory is complete.
+	ofstream saveFile(INV_FILE_NAME.c_str());
+	int inventoryCount = getInvCount();
+	if (saveFile.is_open())
+	{
+		// Writes every item to its own line using commas as delimiters
+		for (int i = 1; i <= inventoryCount; i++)
+		{
+
+			string item = invArray[i].getItem();
+			int quantity = invArray[i].getQuantity();
+			float price = invArray[i].getPrice();
+			saveFile << item << "," << quantity << "," << price << endl;
+		}
+		saveFile.close();
+
+		cout << NEW_LINE << "File Saved" << endl;
+	}
+
+	cout << "Program Ended" << endl;
+}

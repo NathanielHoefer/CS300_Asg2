@@ -124,7 +124,7 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> Request Item, Quantity, and Price from user
 				> Modify part based on argument passed
 				
-			+ ParseLine(line) - Parses string passed using comma delimiters 
+			- ParseLine(line) - Parses string passed using comma delimiters 
 				and adds info to inventory.
 				Input Parms: a single line from inventory.txt
 				Output Parms: None
@@ -147,5 +147,20 @@ Functions:	+ DisplayMenu() - Displays user menu
 				Output Parms: Prints part info with or without labels
 				> Display part if displayLabels == true
 				> Display formatted part info.
+				
+			- ReadFile() - Reads the file to inventory array
+				Input Parms: inventory.txt file
+				Output Parms: None
+				> Open file stream
+				> Read and Parse each line
+				> Print error message if there is an error
+				
+			- SaveFile() - Saves file to inventory.txt.
+				Input Parms: None
+				Output Parms: inventory.txt file
+				> Open stream
+				> Save each part as a line with comma delimiters
+				> Close stream
+				
 
 */
