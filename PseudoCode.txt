@@ -22,7 +22,21 @@ Data:		- partNum - part number that should hold int from 1 to 100
 
 Cnstrctrs:	+ Inventory() - Sets the values to default
 			+ Inventory(item,quantity,price) - Sets the values and calculates
-				the partNum and totalCost.			
+				the partNum and totalCost.		
+				
+Mutator Functions:
+			+ setPartNum
+			+ setItem
+			+ setQuantity
+			+ setPrice
+			+ setTotalCost
+			
+Accessor Functions:
+			+ getPartNum
+			+ getItem
+			+ getQuantity
+			+ getPrice
+			+ getTotalCost	
 			
 Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 				based on the partNum chosen
@@ -38,18 +52,18 @@ Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 Class Name: InvMethods
 
 Data:		- invArray[] (inventory) - Holds all of the inventory objects.
-			- invCount (int) - The number of different inventory items
-			- invTotal (float) - The total value of all the items
+			- invCount (int, static) - The number of different inventory items
+			- invTotal (float, static) - The total value of all the items
 			
 Cnstrctrs:	+ InvMethods() - Creates Inventory array and 
 			
 Mutator Functions:
-			+ incrementInvCount - Increases count by 1.
-			+ setInvTotal
+			+ incrementInvCount (static) - Increases count by 1.
+			+ setInvTotal (static)
 			
 Accessor Functions:
-			+ getInvCount
-			+ getInvTotal
+			+ getInvCount (static)
+			+ getInvTotal (static)
 			
 Functions:	+ DisplayMenu() - Displays user menu
 				Input Parms: None
@@ -102,7 +116,7 @@ Functions:	+ DisplayMenu() - Displays user menu
 				Output Parms: bool to be used by menu displayed
 				> Return true to confirm that exit program is accessed.
 				
-			- RequestPartInfo(itemNum) - Asks the user for item, quantity,
+			- RequestPartInfo(partIndex) - Asks the user for item, quantity,
 				and cost. 
 				Input Parms: Part to be changed. Lists negative number to 
 					specify new part	
@@ -119,14 +133,14 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> If successful, create new part
 				> If unsuccessful, print error message
 				
-			- CalcTotalCost(partNum) - Returns the total cost of parts in 
+			- CalcTotalCost(partIndex) - Returns the total cost of parts in 
 				inventory
 				Input Parms: Part number between 0-Max count
 				Output Parms: None
 				Return: The float total cost of part in inventory
 				> Price of Part * Quantity of Part
 				
-			- FormatItemDisplay(partNum,displayLabels) - Formats the items to
+			- FormatItemDisplay(partIndex,displayLabels) - Formats the items to
 				display correctly within a table.
 				Input Parms: int partNum - part to be formatted
 							bool displayLabels - true to display labels

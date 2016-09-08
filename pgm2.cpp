@@ -156,23 +156,6 @@ const int MAX_INVENTORY = 100;
 
 
 
-/*****************************************************************************/
-// Structures
-/*****************************************************************************/
-
-
-// Establishes the items to be in the inventory structure
-struct inventoryItem
-{
-	int partNum; 		// part number that should hold int from 1 to 100
-	string item;		// Name of item
-	int quantity; 		// quantity of how many of the part there is
-	float price; 		// price per item
-	float totalCost;	// total cost of the inventory items
-};
-
-
-
 
 /*****************************************************************************/
 // Class Headers
@@ -180,10 +163,8 @@ struct inventoryItem
 
 
 
-/* This inventory class is used to contain all of the methods and member
- * variables pertaining to the Inventory process. There are some things that
- * are not as efficient as they could be, but I decided to experiment with
- * implementing the class within this one file.
+/* The inventory class contains only the members associated with the inventory
+ * which are part number, item, quantity, price, and total cost.
  */
 class Inventory
 {
@@ -192,11 +173,21 @@ class Inventory
 
 // Member Variables
 
+	// part number that should hold int from 1 to 100
 	int m_partNum;
+
+	// Name of item
 	string m_item;
+
+	// quantity of how many of the part there is
 	int m_quantity;
+
+	// price per item
 	float m_price;
+
+	// total cost of the inventory items
 	float m_totalCost;
+
 
 
 	public:
@@ -207,6 +198,19 @@ class Inventory
 	Inventory(string item, int quantity, float price);
 
 
+// Mutators and Accessors
+
+	void setPartNum(int partNum) { m_partNum = partNum; };
+	void setItem(string item) { m_item = item; };
+	void setQuantity(int quantity) { m_quantity = quantity; };
+	void setPrice(float price) { m_price = price; };
+	void setTotalCost(float totalCost) { m_totalCost = totalCost; };
+
+	int getPartNum() { return m_partNum; };
+	string getItem() { return m_item; };
+	int getQuantity() { return m_quantity; };
+	float getPrice() { return m_price; };
+	float getTotalCost() { return m_totalCost; };
 // Methods
 
 	// Updates the part info based on the partNum chosen
@@ -215,8 +219,8 @@ class Inventory
 };
 
 
-/* This inventory class is used to contain all of the methods and member
- * variables pertaining to the Inventory process. There are some things that
+/* This inventory class is used to contain all of the methods
+ * pertaining to the Inventory process. There are some things that
  * are not as efficient as they could be, but I decided to experiment with
  * implementing the class within this one file.
  */
@@ -232,10 +236,10 @@ class InvMethods
 	//inventoryItem inventory[MAX_INVENTORY];
 
 	// The number of different inventory items
-	int m_invCount;
+	static int m_invCount;
 
 	// The total value of all the items
-	float m_invTotal;
+	static float m_invTotal;
 
 
 
@@ -259,12 +263,12 @@ class InvMethods
 // Mutators and Accessors
 
 	// Accesses the member variables of the class
-	int getInvCount() { return invCount; };
-	float getInvTotal() { return invTotal; };
+	static int getInvCount() { return m_invCount; };
+	static float getInvTotal() { return m_invTotal; };
 
 	// Modifies the member variables of the class
-	void incrementInvCount() { m_invCount++; };
-	void setInvTotal(float invTotal) { m_invTotal = invTotal; };
+	static void incrementInvCount() { m_invCount++; };
+	static void setInvTotal(float invTotal) { m_invTotal = invTotal; };
 
 
 
@@ -289,10 +293,10 @@ class InvMethods
 	bool ExitProgram();
 
 	// Asks the user for item, quantity, and cost
-	void RequestPartInfo(int itemNum);
+	void RequestPartInfo(int partIndex);
 
 	// Formats the items to display correctly
-	void formatItemDisplay(int itemNum, bool displayLabels);
+	void formatItemDisplay(int partIndex, bool displayLabels);
 
 	// Returns the total cost of inventoried item
 	float CalcTotalCost(int item);
@@ -310,7 +314,7 @@ int main(void)
 {
 
 	// Instantiated inventory object used for inventory procedures
-	Inventory inventory;
+	InvMethods inventory;
 	string inventoryFileName = "inventory.txt";
 
 
@@ -359,9 +363,10 @@ int main(void)
 		// Writes every item to its own line using commas as delimiters
 		for (int i = 1; i <= inventoryCount; i++)
 		{
-			string item = inventory.getItem(i);
-			int quantity = inventory.getQuantity(i);
-			float price = inventory.getPrice(i);
+
+			string item = inventory.invArray[i].getItem();
+			int quantity = inventory.invArray[i].getQuantity();
+			float price = inventory.invArray[i].getPrice();
 			saveFile << item << "," << quantity << "," << price << endl;
 		}
 		saveFile.close();
@@ -384,7 +389,7 @@ int main(void)
 
 Inventory::Inventory()
 {
-	InvMethods::IncrementInvCount();
+	InvMethods::incrementInvCount();
 
 	m_partNum = 1;
 	m_item = "Default";
@@ -397,7 +402,7 @@ Inventory::Inventory()
 Inventory::Inventory(string item, int quantity, float price)
 {
 	// Increased the inventory count by 1
-	InvMethods::incrementInvCount;
+	InvMethods::incrementInvCount();
 
 	// Sets the members to the entered values
 	m_partNum = InvMethods::getInvCount;
@@ -411,16 +416,34 @@ Inventory::Inventory(string item, int quantity, float price)
 InvMethods::InvMethods()
 {
 
+	// Initializing the inventory array with a size of 100
 	Inventory invArray[MAX_INVENTORY];
-	//TODO Continue from here
+
+	// Initializes the member variables
+	m_invCount = 0;
+	m_invTotal = 0;
 
 }
 
 // METHODS ********************************************************************
 
 
+void Inventory::ModifyItem(int partNum, string item, int quantity, float price)
+{
+	m_partNum = partNum;
+	m_item = item;
+	m_quantity = quantity;
+	m_price = price;
+	m_totalCost = quantity * price;
+
+}
+
+
+/*****************************************************************************/
+
+
 // Displays user menu
-void Inventory::DisplayMenu()
+void InvMethods::DisplayMenu()
 {
 
 	// Loops until user enters menu 5 to exit program.
@@ -458,7 +481,7 @@ void Inventory::DisplayMenu()
 			// inventory has been reached
 			if ((option >= 1) && (option <= MENU_ITMES_COUNT))
 			{
-				if ((invCount >= MAX_INVENTORY) && (option == 2))
+				if ((getInvCount() >= MAX_INVENTORY) && (option == 2))
 				{
 					cout << NEW_LINE << "********************** Max Inventory "
 							"Reached ************************" << endl;
@@ -512,7 +535,7 @@ void Inventory::DisplayMenu()
 
 
 // Prints current inventory
-void Inventory::DisplayParts(bool useTitle)
+void InvMethods::DisplayParts(bool useTitle)
 {
 
 	// The title will print if true
@@ -543,7 +566,7 @@ void Inventory::DisplayParts(bool useTitle)
 
 	// Loops through all inventory items stored and prints them
 	// to the screen.
-	for (int i = 0; i < invCount; i++)
+	for (int i = 0; i < getInvCount(); i++)
 	{
 		formatItemDisplay(i, false);
 	}
@@ -560,7 +583,7 @@ void Inventory::DisplayParts(bool useTitle)
 
 
 // Adds an additional item to inventory
-void Inventory::NewPart()
+void InvMethods::NewPart()
 {
 
 	// Prints title
@@ -576,7 +599,8 @@ void Inventory::NewPart()
 
 
 	// Displays the newly created item formatted.
-	formatItemDisplay(invCount - 1, true);
+	int partIndex = getInvCount() - 1;
+	formatItemDisplay(partIndex, true);
 
 
 	// Menu is displayed until user enters a key.
@@ -594,17 +618,15 @@ void Inventory::NewPart()
 
 
 // Overloaded to allow for adding a new part without user input
-void Inventory::NewPart(string item, int quantity, float price)
+void InvMethods::NewPart(string item, int quantity, float price)
 {
+	int partIndex = getInvCount();
+	int partNum = partIndex + 1;
 
 	// Adds the entered information to the inventory list
-	inventory[invCount].partNum = invCount + 1;
-	inventory[invCount].item = item;
-	inventory[invCount].quantity = quantity;
-	inventory[invCount].price = price;
-	inventory[invCount].totalCost = CalcTotalCost(invCount);
+	invArray[partIndex].ModifyItem(partNum, item, quantity, price);
 
-	invCount += 1;
+	InvMethods::incrementInvCount();
 }
 
 
@@ -612,7 +634,7 @@ void Inventory::NewPart(string item, int quantity, float price)
 
 
 // User selects item to be modified and updates info
-void Inventory::ModifyPart()
+void InvMethods::ModifyPart()
 {
 
 	// Item chosen by user to modify
@@ -636,7 +658,7 @@ void Inventory::ModifyPart()
 
 
 	cout << NEW_LINE << "Please select part number between 1 and "
-			<< invCount << ": " << endl;
+			<< getInvCount() << ": " << endl;
 	cin >> chosenItem;
 
 	// Reduces number to make the index accurate
@@ -671,7 +693,7 @@ void Inventory::ModifyPart()
 
 
 // Prints the total value of inventory
-void Inventory::DisplayInvTotal()
+void InvMethods::DisplayInvTotal()
 {
 
 	// Prints title
@@ -686,9 +708,9 @@ void Inventory::DisplayInvTotal()
 	float invTotal = 0;
 
 	// Extracts every items total cost and adds it to invTotal
-	for (int i = 0; i < invCount; i++)
+	for (int i = 0; i < getInvCount(); i++)
 	{
-		invTotal += inventory[i].totalCost;
+		invTotal += invArray[i].getTotalCost();
 	}
 
 
@@ -703,7 +725,7 @@ void Inventory::DisplayInvTotal()
 
 
 // Exits the menu loop by returning true
-bool Inventory::ExitProgram()
+bool InvMethods::ExitProgram()
 {
 	return true;
 }
@@ -714,7 +736,7 @@ bool Inventory::ExitProgram()
 
 // Asks the user for item, quantity, and cost
 // Lists negative number to specify new part
-void Inventory::RequestPartInfo(int itemNum)
+void InvMethods::RequestPartInfo(int partIndex)
 {
 
 	// Used to hold temporary string until it is parsed into value
@@ -749,16 +771,13 @@ void Inventory::RequestPartInfo(int itemNum)
 
 
 	// Determines if new item or modifying an existing item
-	if (itemNum < 0)
+	if (partIndex < 0)
 	{
 		NewPart(item, quantity, price);
 	}
 	else
 	{
-		inventory[itemNum].item = item;
-		inventory[itemNum].quantity = quantity;
-		inventory[itemNum].price = price;
-		inventory[itemNum].totalCost = CalcTotalCost(itemNum);
+		invArray[partIndex].ModifyItem(partIndex + 1, item, quantity, price);
 	}
 
 }
@@ -768,7 +787,7 @@ void Inventory::RequestPartInfo(int itemNum)
 
 
 // Parses string passed using comma delimiters and adds info to inventory
-int Inventory::ParseLine(string line)
+int InvMethods::ParseLine(string line)
 {
 
 	// First value of substring
@@ -831,11 +850,11 @@ int Inventory::ParseLine(string line)
 
 
 // Returns the total cost of inventoried item
-float Inventory::CalcTotalCost(int item)
+float InvMethods::CalcTotalCost(int partIndex)
 {
 
 	// Multiplies the items price by quantity
-	float totalCost = inventory[item].price * float(inventory[item].quantity);
+	float totalCost = invArray[partIndex].getPrice() * float(invArray[partIndex].getQuantity());
 	return totalCost;
 }
 
@@ -844,7 +863,7 @@ float Inventory::CalcTotalCost(int item)
 
 
 // Formats the items to display correctly within a table
-void Inventory::formatItemDisplay(int itemNum, bool displayLabels)
+void InvMethods::formatItemDisplay(int partIndex, bool displayLabels)
 {
 
 	// This is the formatting of the labels above the items
@@ -862,14 +881,14 @@ void Inventory::formatItemDisplay(int itemNum, bool displayLabels)
 
 	// Displays the item passed into this function
 	cout << left;
-	cout << setw(5) << inventory[itemNum].partNum;
-	cout << setw(20) << inventory[itemNum].item;
+	cout << setw(5) << invArray[partIndex].getPartNum();
+	cout << setw(20) << invArray[partIndex].getItem();
 	cout << right;
-	cout << setw(12) << inventory[itemNum].quantity;
+	cout << setw(12) << invArray[partIndex].getQuantity();
 	cout << setw(7) << "$";
-	cout << setw(9) << fixed << setprecision(2) << inventory[itemNum].price;
+	cout << setw(9) << fixed << setprecision(2) << invArray[partIndex].getPrice();
 	cout << setw(7) << "$";
 	cout << setw(9) << fixed << setprecision(2)
-			<< inventory[itemNum].totalCost << endl;
+			<< invArray[partIndex].getTotalCost() << endl;
 }
 
