@@ -12,7 +12,9 @@ Description of the Problem:
    	program to perform this function.
 
 
-Class Name: Inventory
+Class Name: Inventory 
+	The inventory class contains only the members associated with the inventory
+	which are part number, item, quantity, price, and total cost.
 
 Data:		- partNum - part number that should hold int from 1 to 100
 			- item - Name of item
@@ -50,6 +52,10 @@ Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 			
 
 Class Name: InvMethods
+	This inventory class is used to contain all of the methods
+	pertaining to the Inventory process. There are some things that
+	are not as efficient as they could be, but I decided to encapsulate
+	as much as I could leaving very few steps within the main method.
 
 Data:		- invArray[] (inventory) - Holds all of the inventory objects.
 			- invCount (int, static) - The number of different inventory items

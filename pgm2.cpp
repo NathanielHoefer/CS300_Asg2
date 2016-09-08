@@ -13,12 +13,32 @@ Description of the Problem:
 
 
 Class Name: Inventory
+	The inventory class contains only the members associated with the inventory
+	which are part number, item, quantity, price, and total cost.
 
 Data:		- partNum - part number that should hold int from 1 to 100
 			- item - Name of item
 			- quantity - quantity of how many of the part there is
 			- price - price per item
 			- totalCost - total cost of the inventory items
+
+Cnstrctrs:	+ Inventory() - Sets the values to default
+			+ Inventory(item,quantity,price) - Sets the values and calculates
+				the partNum and totalCost.
+
+Mutator Functions:
+			+ setPartNum
+			+ setItem
+			+ setQuantity
+			+ setPrice
+			+ setTotalCost
+
+Accessor Functions:
+			+ getPartNum
+			+ getItem
+			+ getQuantity
+			+ getPrice
+			+ getTotalCost
 
 Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 				based on the partNum chosen
@@ -32,28 +52,35 @@ Functions:	+ ModifyItem(partNum,item,quantity,price) - Updates the info
 
 
 Class Name: InvMethods
+	This inventory class is used to contain all of the methods
+	pertaining to the Inventory process. There are some things that
+	are not as efficient as they could be, but I decided to encapsulate
+	as much as I could leaving very few steps within the main method.
 
-Data:		- invCount - The number of different inventory items
-			- invTotal - The total value of all the items
+Data:		- invArray[] (inventory) - Holds all of the inventory objects.
+			- invCount (int, static) - The number of different inventory items
+			- invTotal (float, static) - The total value of all the items
+
+Cnstrctrs:	+ InvMethods() - Creates Inventory array and
 
 Mutator Functions:
-			+ setInvCount
-			+ setInvTotal
+			+ incrementInvCount (static) - Increases count by 1.
+			+ setInvTotal (static)
 
 Accessor Functions:
-			+ getInvCount
-			+ getInvTotal
+			+ getInvCount (static)
+			+ getInvTotal (static)
 
 Functions:	+ DisplayMenu() - Displays user menu
 				Input Parms: None
-				Output Parms: Prints the menu
+				Output Parms: None
 				> Print title and options
 				> Request and validate user selection
 				> Implement method based on selection
 
 			- DisplayParts(useTitle) - Prints current inventory
 				Input Parms: bool useTitle - Whether to display title
-				Output Parms: Prints all parts in inventory
+				Output Parms: None
 				> If useTitle is true, print parts title
 				> Print labels and inventory items formatted
 				> Wait for user input to continue
@@ -95,7 +122,7 @@ Functions:	+ DisplayMenu() - Displays user menu
 				Output Parms: bool to be used by menu displayed
 				> Return true to confirm that exit program is accessed.
 
-			- RequestPartInfo(itemNum) - Asks the user for item, quantity,
+			- RequestPartInfo(partIndex) - Asks the user for item, quantity,
 				and cost.
 				Input Parms: Part to be changed. Lists negative number to
 					specify new part
@@ -112,20 +139,35 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> If successful, create new part
 				> If unsuccessful, print error message
 
-			- CalcTotalCost(partNum) - Returns the total cost of parts in
+			- CalcTotalCost(partIndex) - Returns the total cost of parts in
 				inventory
 				Input Parms: Part number between 0-Max count
 				Output Parms: None
 				Return: The float total cost of part in inventory
 				> Price of Part * Quantity of Part
 
-			- FormatItemDisplay(partNum,displayLabels) - Formats the items to
+			- FormatItemDisplay(partIndex,displayLabels) - Formats the items to
 				display correctly within a table.
 				Input Parms: int partNum - part to be formatted
 							bool displayLabels - true to display labels
 				Output Parms: Prints part info with or without labels
 				> Display part if displayLabels == true
 				> Display formatted part info.
+
+			- ReadFile() - Reads the file to inventory array
+				Input Parms: inventory.txt file
+				Output Parms: None
+				> Open file stream
+				> Read and Parse each line
+				> Print error message if there is an error
+
+			- SaveFile() - Saves file to inventory.txt.
+				Input Parms: None
+				Output Parms: inventory.txt file
+				> Open stream
+				> Save each part as a line with comma delimiters
+				> Close stream
+
 
 */
 #include <iostream>
@@ -224,8 +266,8 @@ class Inventory
 
 /* This inventory class is used to contain all of the methods
  * pertaining to the Inventory process. There are some things that
- * are not as efficient as they could be, but I decided to experiment with
- * implementing the class within this one file.
+ * are not as efficient as they could be, but I decided to encapsulate
+ * as much as I could leaving very few steps within the main method.
  */
 class InvMethods
 {
@@ -316,18 +358,18 @@ class InvMethods
 /*****************************************************************************/
 
 
+// Initializing the static member variables of the InvMethods class
+int InvMethods::m_invCount = 0;
+float InvMethods::m_invTotal = 0;
+
 int main(void)
 {
 
 	// Instantiated inventory object used for inventory procedures
 	InvMethods inventory;
 
-
-
 	// Displays the menu and enters loop until user is finished.
 	inventory.DisplayMenu();
-
-
 
 }
 
@@ -374,8 +416,8 @@ InvMethods::InvMethods()
 	Inventory invArray[MAX_INVENTORY];
 
 	// Initializes the member variables
-	m_invCount = 0;
-	m_invTotal = 0;
+	InvMethods::m_invCount = 0;
+	InvMethods::m_invTotal = 0;
 
 }
 
@@ -564,11 +606,6 @@ void InvMethods::NewPart()
 	// Menu is displayed until user enters a key.
 	cout << NEW_LINE << "Press Enter key to continue: ";
 	
-
-//	// Credit goes to: Computergeek01 -
-//	// http://www.cplusplus.com/forum/windows/55426/#msg299186
-//	cin.sync(); // Flush The Input Buffer Just In Case
-//	cin.ignore(); // There's No Need To Actually Store The Users Input
 }
 
 
@@ -639,11 +676,6 @@ void InvMethods::ModifyPart()
 	// Menu is displayed until user enters a key.
 	cout << NEW_LINE << "Press Enter key to continue: ";
 	
-
-//	// Credit goes to: Computergeek01 -
-//	// http://www.cplusplus.com/forum/windows/55426/#msg299186
-//	cin.sync(); // Flush The Input Buffer Just In Case
-//	cin.ignore(); // There's No Need To Actually Store The Users Input
 }
 
 

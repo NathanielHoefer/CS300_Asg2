@@ -1,5 +1,3 @@
-Car,50,30
-Boat,50,0.05
 s,0,0
 Car,50,30
 Boat,50,0.05
@@ -90,5 +88,8 @@ Boat,50,0.05
 s,0,0
 Car,50,30
 Boat,50,0.05
-s,0,0
+Item 93,99,99
 Car,50,30
+Fish,3,30
+Default,1,1
+Default,1,1
