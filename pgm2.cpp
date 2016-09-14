@@ -168,7 +168,6 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> Save each part as a line with comma delimiters
 				> Close stream
 
-
 */
 #include <iostream>
 #include <fstream>
@@ -256,6 +255,8 @@ class Inventory
 	int getQuantity() { return m_quantity; };
 	float getPrice() { return m_price; };
 	float getTotalCost() { return m_totalCost; };
+
+
 // Methods
 
 	// Updates the part info based on the partNum chosen
@@ -385,8 +386,7 @@ int main(void)
 
 Inventory::Inventory()
 {
-	InvMethods::incrementInvCount();
-
+	// Default values so that there is no garbage
 	m_partNum = 1;
 	m_item = "Default";
 	m_quantity = 1;
@@ -412,12 +412,7 @@ Inventory::Inventory(string item, int quantity, float price)
 InvMethods::InvMethods()
 {
 
-	// Initializing the inventory array with a size of 100
-	Inventory invArray[MAX_INVENTORY];
-
-	// Initializes the member variables
-	InvMethods::m_invCount = 0;
-	InvMethods::m_invTotal = 0;
+	// Currently no settings for this constructor
 
 }
 
@@ -457,7 +452,7 @@ void InvMethods::DisplayMenu()
 		{
 			// Application title
 			cout << NEW_LINE << NEW_LINE << "------------------ Inventory "
-					"Program - Assignment 1 -----------------" << endl;
+					"Program - Assignment 2 -----------------" << endl;
 			cout << "         This application records the inventory of "
 					"your shop         " << endl;
 			cout << "----------------------------------------------------"
@@ -937,7 +932,7 @@ void InvMethods::SaveFile()
 	if (saveFile.is_open())
 	{
 		// Writes every item to its own line using commas as delimiters
-		for (int i = 1; i <= inventoryCount; i++)
+		for (int i = 0; i < inventoryCount; i++)
 		{
 
 			string item = invArray[i].getItem();

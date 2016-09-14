@@ -1,9 +1,9 @@
 /*****************************************************************************/
-/* Program 1 - Inventory Application										 */
+/* Program 2 - Inventory Application										 */
 /*****************************************************************************
     Author: Nathaniel Hoefer
     Student ID: X529U639
-    Program: #1
+    Program: #2
 
 
 Description of the Problem:
@@ -168,5 +168,4 @@ Functions:	+ DisplayMenu() - Displays user menu
 				> Save each part as a line with comma delimiters
 				> Close stream
 				
-
 */
